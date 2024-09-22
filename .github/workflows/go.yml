@@ -54,6 +54,3 @@ jobs:
         with:
           go-version: '1.22'
       - uses: golangci/golangci-lint-action@v3
-        with:
-          skip-files: # Добавьте конкретные настройки для golangci-lint, если нужно
-            - "**/testdata/**"
