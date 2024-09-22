@@ -9,35 +9,41 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-go@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.1'  # Добавляем конкретную версию Go
 
-    - name: Build
-      run: go build -v ./...
+      - name: Build
+        run: go build -v ./...
 
   tests:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-go@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.1'
 
-    - name: Test
-      run: |
-        go test -v ./...
-        go clean -testcache
+      - name: Test
+        run: |
+          go test -v ./...
+          go clean -testcache  # Очистка временных файлов после тестов
 
   tests-race:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-go@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.1'
 
-    - name: Test with race detector
-      run: |
-        go test -race -v ./...
-        go clean -testcache
+      - name: Test with race detector
+        run: |
+          go test -race -v ./...
+          go clean -testcache  # Очистка временных файлов после тестов
   
   lint:
     needs: [tests, tests-race]
@@ -45,4 +51,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.1'
       - uses: golangci/golangci-lint-action@v3
+        with:
+          skip-files: # Добавьте конкретные настройки для golangci-lint, если нужно
+            - "**/testdata/**"
